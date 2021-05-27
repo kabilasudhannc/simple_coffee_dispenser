@@ -44,7 +44,7 @@ def money_calculator(money):
 def check_resource(choice):
     is_available = ''
     for ingredients in MENU[choice]['ingredients']:
-        if resources[ingredients] > MENU[choice]['ingredients'][ingredients]:
+        if resources[ingredients] >= MENU[choice]['ingredients'][ingredients]:
             is_available = 'available'
         else:
             is_available = ingredients
@@ -52,11 +52,12 @@ def check_resource(choice):
     return is_available
 
 
-def manage_resource(choice):
+def make_coffee(choice):
     global resources
     ingredients = MENU[choice]['ingredients']
     for resource in ingredients:
         resources[resource] -= ingredients[resource]
+    print(f"Here is your {choice} ☕ Enjoy!")
     return resources
 
 
@@ -83,11 +84,10 @@ def coffee_dispenser():
                     money[keys] = value
                 total = money_calculator(money)
                 if total > MENU[choice]['cost']:
-                    manage_resource(choice)
                     collection += MENU[choice]['cost']
                     balance = total - MENU[choice]['cost']
                     print(f"Here is ${balance} in change.")
-                    print(f"Here is your {choice} ☕ Enjoy!")
+                    make_coffee(choice)
                 else:
                     print("Sorry that's not enough money. Money refunded.")
             else:
